@@ -21,6 +21,9 @@
     <ClInclude Include="steam-call-manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ez-steam-api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

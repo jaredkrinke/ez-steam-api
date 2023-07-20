@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ez-steam-api.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="steam-call-manager.h" />
   </ItemGroup>
