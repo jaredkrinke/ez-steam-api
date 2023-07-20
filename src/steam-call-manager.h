@@ -123,11 +123,10 @@ class SteamCallManager {
 public:
     const int pollingPeriodMS = 200;
 
-    SteamCallManager(unsigned long long appId);
+    SteamCallManager(unsigned int appId);
     ~SteamCallManager();
 
     // Called by SteamCall<...> helpers
-    unsigned int GetOutstandingCallCount();
     void IncrementOutstandingCallCount();
     void DecrementOutstandingCallCount();
 
@@ -153,8 +152,8 @@ private:
 
     std::unique_ptr<std::thread> m_thread;
 
-    std::atomic_int m_outstandingCalls;
     std::mutex m_startOrShutdownLock;
+    int m_outstandingCalls;
     bool m_shouldShutdown;
     std::condition_variable_any m_startOrShutdown;
 

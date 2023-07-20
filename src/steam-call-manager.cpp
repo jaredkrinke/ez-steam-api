@@ -1,7 +1,9 @@
 #include "pch.h"
 
-SteamCallManager::SteamCallManager(unsigned long long appId)
+SteamCallManager::SteamCallManager(unsigned int appId)
     : m_appId(appId),
+    m_outstandingCalls(0),
+    m_shouldShutdown(false),
     m_achievementsInitialized(false),
     m_callbackUserStatsReceived(this, &SteamCallManager::OnUserStatsReceived),
     m_callbackUserStatsStored(this, &SteamCallManager::OnUserStatsStored),
@@ -68,11 +70,8 @@ SteamCallManager::~SteamCallManager() {
     m_thread->join();
 }
 
-unsigned int SteamCallManager::GetOutstandingCallCount() {
-    return m_outstandingCalls.load();
-}
-
 void SteamCallManager::IncrementOutstandingCallCount() {
+    std::lock_guard<std::mutex> lock(m_startOrShutdownLock);
     if (++m_outstandingCalls == 1) {
         // First outstanding call; kick off processing now
         m_startOrShutdown.notify_all();
@@ -80,13 +79,18 @@ void SteamCallManager::IncrementOutstandingCallCount() {
 }
 
 void SteamCallManager::DecrementOutstandingCallCount() {
+    std::lock_guard<std::mutex> lock(m_startOrShutdownLock);
     --m_outstandingCalls;
 }
 
 void SteamCallManager::RunThread() {
     while (true) {
-        std::lock_guard<std::mutex> lock(m_startOrShutdownLock);
-        m_startOrShutdown.wait(m_startOrShutdownLock);
+        {
+            std::lock_guard<std::mutex> lock(m_startOrShutdownLock);
+            while (!m_shouldShutdown && m_outstandingCalls <= 0) {
+                m_startOrShutdown.wait(m_startOrShutdownLock);
+            }
+        }
 
         if (m_shouldShutdown) {
             // Shutdown
@@ -94,11 +98,14 @@ void SteamCallManager::RunThread() {
         }
         else {
             // Start processing
-            // TODO: Could lock be released first?
             while (true) {
                 SteamAPI_RunCallbacks();
-                if (GetOutstandingCallCount() <= 0) {
-                    break;
+
+                {
+                    std::lock_guard<std::mutex> lock(m_startOrShutdownLock);
+                    if (m_outstandingCalls <= 0) {
+                        break;
+                    }
                 }
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(SteamCallManager::pollingPeriodMS));
