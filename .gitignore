@@ -1,3 +1,5 @@
 steam/
 x64/
 .vs/
+*.dll
+*.so
