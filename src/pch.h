@@ -26,7 +26,7 @@
 #include <steam/isteamuserstats.h>
 
 // Other
-#include "../deps/json/nlohmann/json.hpp"
+#include "../deps/json.hpp"
 
 // Local
 #define EZ_STEAM_IMPLEMENTATION

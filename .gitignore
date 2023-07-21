@@ -1,4 +1,6 @@
 .vs/
+deps/*
+!deps/populate.sh
 node_modules/
 steam/
 x64/
