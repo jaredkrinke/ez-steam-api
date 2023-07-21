@@ -6,7 +6,6 @@ constexpr int EZ_STEAM_ERROR = 0;
 constexpr int EZ_STEAM_TRUE = 1;
 constexpr int EZ_STEAM_FALSE = 0;
 
-#define EZ_STEAM_DEF extern "C" __declspec(dllexport) int
 #define EZ_STEAM_TRY noexcept try
 #define EZ_STEAM_CATCH catch (...) { return EZ_STEAM_ERROR; }
 #define EZ_STEAM_BOOLIFY(a) (a ? EZ_STEAM_TRUE : EZ_STEAM_FALSE)

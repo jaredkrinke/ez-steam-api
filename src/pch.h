@@ -28,6 +28,8 @@
 #include "../deps/json/nlohmann/json.hpp"
 
 // Local
+#define EZ_STEAM_IMPLEMENTATION
+#include "ez-steam-api.h"
 #include "steam-call-manager.h"
 
 #endif

@@ -1,12 +1,21 @@
 #pragma once
 
+// Definitions for C vs. C++, Windows, etc.
+#ifdef __cplusplus
+#define EZ_STEAM_DEF_PREFIX extern "C"
+#endif
+
 #ifdef _WIN32
+#ifdef EZ_STEAM_IMPLEMENTATION
+#define EZ_STEAM_DEF_ATTRIBUTES __declspec(dllexport)
+#else
 #define EZ_STEAM_DEF_ATTRIBUTES __declspec(dllimport)
+#endif
 #else
 #define EZ_STEAM_DEF_ATTRIBUTES 
 #endif
 
-#define EZ_STEAM_DEF extern "C" EZ_STEAM_DEF_ATTRIBUTES int
+#define EZ_STEAM_DEF EZ_STEAM_DEF_PREFIX EZ_STEAM_DEF_ATTRIBUTES int
 
 // Startup and shutdown
 EZ_STEAM_DEF ez_steam_start(unsigned int app_id, int* out_should_restart);
