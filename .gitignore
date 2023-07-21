@@ -3,6 +3,7 @@ node_modules/
 steam/
 x64/
 *.dll
+*.o
 *.so
 package-lock.json
 steam_appid.txt
