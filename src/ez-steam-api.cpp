@@ -1,12 +1,15 @@
 #include "pch.h"
 
+#ifdef _WIN32
+#define strdup _strdup
+#endif
+
 constexpr int EZ_STEAM_SUCCESS = 1;
 constexpr int EZ_STEAM_ERROR = 0;
 
 constexpr int EZ_STEAM_TRUE = 1;
 constexpr int EZ_STEAM_FALSE = 0;
 
-#define EZ_STEAM_TRY noexcept try
 #define EZ_STEAM_CATCH catch (...) { return EZ_STEAM_ERROR; }
 #define EZ_STEAM_BOOLIFY(a) (a ? EZ_STEAM_TRUE : EZ_STEAM_FALSE)
 
@@ -15,7 +18,7 @@ constexpr int EZ_STEAM_FALSE = 0;
 SteamCallManager* g_steam_call_manager = nullptr;
 
 // Startup and shutdown
-EZ_STEAM_DEF ez_steam_start(unsigned int app_id, int* out_should_restart) EZ_STEAM_TRY {
+EZ_STEAM_DEF ez_steam_start(unsigned int app_id, int* out_should_restart) noexcept try {
 	*out_should_restart = EZ_STEAM_FALSE;
 
 	if (SteamAPI_RestartAppIfNecessary(app_id)) {
@@ -31,7 +34,7 @@ EZ_STEAM_DEF ez_steam_start(unsigned int app_id, int* out_should_restart) EZ_STE
 }
 EZ_STEAM_CATCH
 
-EZ_STEAM_DEF ez_steam_stop() {
+EZ_STEAM_DEF ez_steam_stop() noexcept {
 	if (g_steam_call_manager) {
 		delete g_steam_call_manager;
 	}
@@ -42,12 +45,12 @@ EZ_STEAM_DEF ez_steam_stop() {
 
 // Memory handling
 char* duplicate_string(const std::string& str) {
-	char* result = _strdup(str.c_str());
+	char* result = strdup(str.c_str());
 	CHECK(result);
 	return result;
 }
 
-EZ_STEAM_DEF ez_steam_string_free(char* data) {
+EZ_STEAM_DEF ez_steam_string_free(char* data) noexcept {
 	if (data) {
 		free(data);
 	}
@@ -56,7 +59,7 @@ EZ_STEAM_DEF ez_steam_string_free(char* data) {
 }
 
 // User info
-EZ_STEAM_DEF ez_steam_user_name_get(char** out_user_name) EZ_STEAM_TRY {
+EZ_STEAM_DEF ez_steam_user_name_get(char** out_user_name) noexcept try {
 	*out_user_name = nullptr;
 
 	ISteamFriends* friends = SteamFriends();
@@ -70,7 +73,7 @@ EZ_STEAM_DEF ez_steam_user_name_get(char** out_user_name) EZ_STEAM_TRY {
 EZ_STEAM_CATCH
 
 // Leaderboards
-EZ_STEAM_DEF ez_steam_leaderboard_get(const char* leaderboard_name, unsigned long long* out_leaderboard) EZ_STEAM_TRY {
+EZ_STEAM_DEF ez_steam_leaderboard_get(const char* leaderboard_name, unsigned long long* out_leaderboard) noexcept try {
 	*out_leaderboard = 0;
 
 	CHECK(g_steam_call_manager);
@@ -80,7 +83,7 @@ EZ_STEAM_DEF ez_steam_leaderboard_get(const char* leaderboard_name, unsigned lon
 }
 EZ_STEAM_CATCH
 
-EZ_STEAM_DEF ez_steam_leaderboard_set_score(unsigned long long leaderboard, int score, const int* detail, int detail_count, int* out_score_updated) EZ_STEAM_TRY {
+EZ_STEAM_DEF ez_steam_leaderboard_set_score(unsigned long long leaderboard, int score, const int* detail, int detail_count, int* out_score_updated) noexcept try {
 	*out_score_updated = EZ_STEAM_FALSE;
 
 	CHECK(g_steam_call_manager);
@@ -90,7 +93,7 @@ EZ_STEAM_DEF ez_steam_leaderboard_set_score(unsigned long long leaderboard, int 
 }
 EZ_STEAM_CATCH
 
-EZ_STEAM_DEF ez_steam_leaderboard_get_friend_scores(unsigned long long leaderboard, char** friend_scores_json) EZ_STEAM_TRY {
+EZ_STEAM_DEF ez_steam_leaderboard_get_friend_scores(unsigned long long leaderboard, char** friend_scores_json) noexcept try {
 	*friend_scores_json = nullptr;
 
 	CHECK(g_steam_call_manager);
@@ -111,7 +114,7 @@ EZ_STEAM_DEF ez_steam_leaderboard_get_friend_scores(unsigned long long leaderboa
 EZ_STEAM_CATCH
 
 // Achievements
-EZ_STEAM_DEF ez_steam_achievement_get(const char* achievement_id, int* achieved) EZ_STEAM_TRY {
+EZ_STEAM_DEF ez_steam_achievement_get(const char* achievement_id, int* achieved) noexcept try {
 	*achieved = EZ_STEAM_FALSE;
 
 	CHECK(g_steam_call_manager);
@@ -121,7 +124,7 @@ EZ_STEAM_DEF ez_steam_achievement_get(const char* achievement_id, int* achieved)
 }
 EZ_STEAM_CATCH
 
-EZ_STEAM_DEF ez_steam_achievement_set(const char* achievement_id, int* newly_achieved) EZ_STEAM_TRY {
+EZ_STEAM_DEF ez_steam_achievement_set(const char* achievement_id, int* newly_achieved) noexcept try {
 	*newly_achieved = EZ_STEAM_FALSE;
 
 	CHECK(g_steam_call_manager);
@@ -131,7 +134,7 @@ EZ_STEAM_DEF ez_steam_achievement_set(const char* achievement_id, int* newly_ach
 }
 EZ_STEAM_CATCH
 
-EZ_STEAM_DEF ez_steam_achivements_store() EZ_STEAM_TRY {
+EZ_STEAM_DEF ez_steam_achivements_store() noexcept try {
 	CHECK(g_steam_call_manager);
 	g_steam_call_manager->StoreAchievements();
 
