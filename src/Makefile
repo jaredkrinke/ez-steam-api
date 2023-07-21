@@ -1,3 +1,6 @@
+# Release flags: -flto -Os
+# Debug flags: -g -O0
+
 CXXFLAGS = -Wall -fPIC -I../steam/sdk/public
 LDFLAGS = -shared
 
