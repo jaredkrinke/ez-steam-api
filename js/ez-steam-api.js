@@ -1,3 +1,5 @@
+const os = require("os");
+const path = require("path");
 const koffi = require("koffi");
 
 /** Represents an error that occurred when interacting with ez-steam-api. */
@@ -8,7 +10,7 @@ class SteamError extends Error {
 }
 
 // Koffi-based FFI to ez-steam-api.dll/so
-const lib = koffi.load("ez-steam-api");
+const lib = koffi.load(path.join(__dirname, "bin", `${os.platform()}-${os.arch()}`, "ez-steam-api"));
 
 const ez_steam_string = koffi.disposable(
     "ez_steam_string",

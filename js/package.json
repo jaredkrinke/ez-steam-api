@@ -1,8 +1,12 @@
 {
-  "name": "ez-steam-api-js",
+  "name": "ez-steam-api",
   "version": "1.0.0",
   "description": "Synchronous wrapper around the Steamworks API",
-  "main": "ez-steam-api-js.js",
+  "main": "ez-steam-api.js",
+  "files": [
+    "bin/linux-x64/ez-steam-api.so",
+    "bin/win32-x64/ez-steam-api.dll"
+  ],
   "dependencies": {
     "koffi": "^2.5.7"
   }
