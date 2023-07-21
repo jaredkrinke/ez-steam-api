@@ -1,7 +1,9 @@
 .vs/
+Debug/
 deps/*
 !deps/populate.sh
 node_modules/
+Release/
 steam/
 x64/
 *.dll
