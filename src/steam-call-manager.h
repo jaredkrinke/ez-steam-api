@@ -10,7 +10,14 @@
 #include <steam/steam_api.h>
 #include <steam/isteamuserstats.h>
 
-class SteamCallManager;
+class SteamCallManagerBase {
+public:
+    virtual ~SteamCallManagerBase() {
+    }
+
+    virtual void IncrementOutstandingCallCount() = 0;
+    virtual void DecrementOutstandingCallCount() = 0;
+};
 
 // Helper for running a function on scope exit
 class scope_exit {
@@ -31,7 +38,7 @@ private:
 template<typename TSteamResult, typename TState, typename TResult, typename ...TArgs>
 class SteamCall {
 public:
-    SteamCall(SteamCallManager* parent, std::function<SteamAPICall_t(TArgs...)> start, std::function<void(TSteamResult*, TState*)> translateResult)
+    SteamCall(SteamCallManagerBase* parent, std::function<SteamAPICall_t(TArgs...)> start, std::function<void(TSteamResult*, TState*)> translateResult)
         : m_parent(parent), m_start(start), m_translateResult(translateResult), m_state(nullptr) {
     }
 
@@ -85,7 +92,7 @@ private:
         }
     }
 
-    SteamCallManager* m_parent;
+    SteamCallManagerBase* m_parent;
 
     // Functions for calling the Steam API and processing the result
     std::function<SteamAPICall_t(TArgs...)> m_start;
@@ -119,7 +126,7 @@ typedef struct {
     std::vector<FriendLeaderboardRow> data;
 } GetFriendLeaderboardEntriesState;
 
-class SteamCallManager {
+class SteamCallManager : SteamCallManagerBase {
 public:
     const int pollingPeriodMS = 200;
 
@@ -127,8 +134,8 @@ public:
     ~SteamCallManager();
 
     // Called by SteamCall<...> helpers
-    void IncrementOutstandingCallCount();
-    void DecrementOutstandingCallCount();
+    void IncrementOutstandingCallCount() override;
+    void DecrementOutstandingCallCount() override;
 
     // SteamCallManager thread function
     void RunThread();

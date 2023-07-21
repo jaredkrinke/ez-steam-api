@@ -1,13 +1,14 @@
 #include "pch.h"
 
 SteamCallManager::SteamCallManager(unsigned int appId)
-    : m_appId(appId),
-    m_outstandingCalls(0),
-    m_shouldShutdown(false),
-    m_achievementsInitialized(false),
+    :
     m_callbackUserStatsReceived(this, &SteamCallManager::OnUserStatsReceived),
     m_callbackUserStatsStored(this, &SteamCallManager::OnUserStatsStored),
     m_callbackAchievementStored(this, &SteamCallManager::OnAchievementStored),
+    m_appId(appId),
+    m_outstandingCalls(0),
+    m_shouldShutdown(false),
+    m_achievementsInitialized(false),
     m_getLeaderboard(this,
         [](const char* name) -> SteamAPICall_t {
             return SteamUserStats()->FindLeaderboard(name);

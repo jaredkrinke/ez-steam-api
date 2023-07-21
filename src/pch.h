@@ -8,6 +8,7 @@
 
 // C
 #include <stdlib.h>
+#include <string.h>
 
 // C++
 #include <string>
