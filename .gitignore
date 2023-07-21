@@ -9,5 +9,6 @@ x64/
 *.dll
 *.o
 *.so
+*.tgz
 package-lock.json
 steam_appid.txt
