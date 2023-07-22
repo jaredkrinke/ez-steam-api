@@ -10,7 +10,13 @@ class SteamError extends Error {
 }
 
 // Koffi-based FFI to ez-steam-api.dll/so
-const lib = koffi.load(path.join(__dirname, "bin", `${os.platform()}-${os.arch()}`, "ez-steam-api"));
+const platformToLibraryName = {
+    win32: "ez-steam-api.dll",
+    linux: "ez-steam-api.so",
+};
+
+const platform = os.platform();
+const lib = koffi.load(path.join(__dirname, "bin", `${platform}-${os.arch()}`, platformToLibraryName[platform]));
 
 const ez_steam_string = koffi.disposable(
     "ez_steam_string",
