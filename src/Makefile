@@ -3,7 +3,7 @@
 CXXFLAGS = $(CXXFLAGS) -Wall -fPIC -I../steam/sdk/public
 
 # Release flags: -s
-LDFLAGS = $(LDFLAGS) -shared
+LDFLAGS = $(LDFLAGS) -shared -L../steam/sdk/redistributable_bin/linux64 -lsteam_api
 
 SOURCES = steam-call-manager.cpp ez-steam-api.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
