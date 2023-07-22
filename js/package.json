@@ -1,6 +1,6 @@
 {
   "name": "ez-steam-api",
-  "version": "1.0.0",
+  "version": "1.57.0",
   "description": "Synchronous wrapper around the Steamworks API",
   "main": "ez-steam-api.js",
   "files": [

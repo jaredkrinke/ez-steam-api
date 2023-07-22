@@ -13,5 +13,8 @@ Internally, ez-steam-api spins up a thread for running Steam's callbacks and tak
 
 The synchronous, flat API can be trivially used with C-based foreign function interfaces that many languages provide. For example, this repository provides a Node/JavaScript wrapper, based on [Koffi](https://koffi.dev/).
 
+## Versioning and compatibility
+The second (minor) version number corresponds to the Steamworks SDK's second version component. For example, X.**57**.Y is major version X, targeting Steamworks SDK 1.**57**, with patch version Y.
+
 ## Status
 Note that this library currently only exposes the portions of the Steamworks API that I needed for my own game. The code quality is "hobby ready" (as opposed to "production ready").
