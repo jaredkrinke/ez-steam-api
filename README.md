@@ -1,7 +1,7 @@
 # ez-steam-api
 This is a synchronous/blocking, flat, C-style wrapper around the [Steamworks SDK](https://partner.steamgames.com/doc/sdk), originally designed for use via foreign function interfaces.
 
-This repository also includes a Node/JavaScript wrapper that is based on [Koffi](https://koffi.dev/). I used this wrapper for an Electron-based game on Steam (specifically for a Linux port).
+This repository also includes [a Node/JavaScript wrapper](js/README.md) that is based on [Koffi](https://koffi.dev/). I used that wrapper for an Electron-based game on Steam.
 
 ## Motivation
 The Steamworks API is native C++, with an optional flat/C-style API. Unfortunately, I found both provided options cumbersome in my project, for a few reasons:
@@ -16,7 +16,7 @@ Internally, ez-steam-api spins up a thread for running Steam's callbacks and tak
 The synchronous, flat API can be trivially used with C-based foreign function interfaces that many languages provide. See the JavaScript wrapper in this repository for an example.
 
 ## Functionality and status
-Currently, this library only exposes the functionality I needed for my game (listed below). Note: The code quality is "hobby ready" (as opposed to "production ready").
+Currently, this library only exposes the functionality I needed for my game (listed below). Note: The code quality is "hobby ready" (as opposed to "production ready"). I have tested on Windows (VS 2019) and Linux (G++ 9) only.
 
 * Retrieve player's "persona name" (display name)
 * Get, set, and persist achievements
@@ -26,40 +26,10 @@ Currently, this library only exposes the functionality I needed for my game (lis
 Feel free to open an issue or pull request to add additional functionality.
 
 ## Usage
-Here are some examples of using the API from JavaScript (via Koffi FFI) and C:
+For Electron/Node/JavaScript usage, see [the README for the npm package](js/README.md).
 
-### JavaScript
-```js
-const { Steam } = require("ez-steam-api");
+Here is an example using the C API:
 
-const appId = 12345; // Replace with your app id
-
-const shouldExit = Steam.start(appId);
-if (!shouldExit) {
-    try {
-        // Log the user's "persona" (display) name
-        console.log(`Name: ${Steam.getUserName()}`);
-
-        // Set an achievement (this assumes an achievement named "FOOBAR" exists for the app)
-        const newlyAchieved = Steam.setAchievement("FOOBAR");
-        if (newlyAchieved) {
-            await Steam.storeAchievementsAsync();
-        }
-
-        // Get a friend leaderboard (this assumes a leaderboard named "Score" exists for the app)
-        const leaderboard = await Steam.getLeaderboardAsync("Score");
-        const json = await leaderboard.getFriendScoresAsync();
-
-        for (const { name, score } of JSON.parse(json)) {
-            console.log(`${name}: ${score}`);
-        }
-    } finally {
-        Steam.stop();
-    }
-}
-```
-
-### C
 ```c
 #include <stdlib.h>
 #include <stdio.h>
@@ -104,6 +74,3 @@ int main(int argc, char** argv) {
     return 0;
 }
 ```
-
-## Versioning and compatibility
-The second (minor) version number corresponds to the Steamworks SDK's second version component. For example, X.**57**.Y is major version X, targeting Steamworks SDK 1.**57**, with patch version Y.
