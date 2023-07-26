@@ -3,6 +3,7 @@
   "version": "0.57.0",
   "description": "Simple wrapper around the Steamworks API using Koffi FFI",
   "license": "MIT-0",
+  "homepage": "https://github.com/jaredkrinke/ez-steam-api",
   "main": "ez-steam-api.js",
   "files": [
     "bin/linux-x64/ez-steam-api.so",
