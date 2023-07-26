@@ -1,7 +1,8 @@
 {
   "name": "ez-steam-api",
   "version": "0.57.0",
-  "description": "Synchronous wrapper around the Steamworks API",
+  "description": "Simple wrapper around the Steamworks API using Koffi FFI",
+  "license": "MIT-0",
   "main": "ez-steam-api.js",
   "files": [
     "bin/linux-x64/ez-steam-api.so",
