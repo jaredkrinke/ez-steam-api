@@ -16,29 +16,32 @@ const { Steam } = require("ez-steam-api");
 
 const appId = 12345; // Replace with your app id
 
-const shouldExit = Steam.start(appId);
-if (!shouldExit) {
-    try {
-        // Log the user's "persona" (display) name
-        console.log(`Name: ${Steam.getUserName()}`);
-
-        // Set an achievement (this assumes an achievement named "FOOBAR" exists for the app)
-        const newlyAchieved = Steam.setAchievement("FOOBAR");
-        if (newlyAchieved) {
-            await Steam.storeAchievementsAsync();
+(async () => {
+    const shouldExit = Steam.start(appId);
+    if (!shouldExit) {
+        try {
+            // Log the user's "persona" (display) name
+            console.log(`Name: ${Steam.getUserName()}`);
+    
+            // Set an achievement (this assumes an achievement named "FOOBAR" exists for the app)
+            const newlyAchieved = Steam.setAchievement("FOOBAR");
+            if (newlyAchieved) {
+                await Steam.storeAchievementsAsync();
+            }
+    
+            // Get a friend leaderboard (this assumes a leaderboard named "Score" exists for the app)
+            const leaderboard = await Steam.getLeaderboardAsync("Score");
+            const rows = await leaderboard.getFriendScoresAsync();
+    
+            console.log("Leaderboard:");
+            for (const { name, score } of rows) {
+                console.log(`${name}: ${score}`);
+            }
+        } finally {
+            Steam.stop();
         }
-
-        // Get a friend leaderboard (this assumes a leaderboard named "Score" exists for the app)
-        const leaderboard = await Steam.getLeaderboardAsync("Score");
-        const json = await leaderboard.getFriendScoresAsync();
-
-        for (const { name, score } of JSON.parse(json)) {
-            console.log(`${name}: ${score}`);
-        }
-    } finally {
-        Steam.stop();
     }
-}
+})();
 ```
 
 ## Versioning and compatibility
