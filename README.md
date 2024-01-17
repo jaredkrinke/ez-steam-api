@@ -54,6 +54,13 @@ int main(int argc, char** argv) {
         ez_steam_string_free(name);
     }
 
+    // Print the user's language selection for this app/game
+    char *language = 0;
+    if (ez_steam_app_language_get(&language)) {
+        printf("Language: %s\n", language);
+        ez_steam_string_free(language);
+    }
+
     // Set an achievement (this assumes an achievement named "FOOBAR" exists for the app)
     int newly_achieved = 0;
     if (ez_steam_achievement_set("FOOBAR", &newly_achieved) && newly_achieved) {

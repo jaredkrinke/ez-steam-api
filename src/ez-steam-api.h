@@ -28,6 +28,9 @@ EZ_STEAM_DEF ez_steam_string_free(char* data) EZ_STEAM_DEF_SUFFIX;
 // User info
 EZ_STEAM_DEF ez_steam_user_name_get(char** out_user_name) EZ_STEAM_DEF_SUFFIX;
 
+// Language settings
+EZ_STEAM_DEF ez_steam_app_language_get(char** out_language) EZ_STEAM_DEF_SUFFIX;
+
 // Leaderboards
 EZ_STEAM_DEF ez_steam_leaderboard_get(const char* leaderboard_name, unsigned long long* out_leaderboard) EZ_STEAM_DEF_SUFFIX;
 EZ_STEAM_DEF ez_steam_leaderboard_set_score(unsigned long long leaderboard, int score, const int* detail, int detail_count, int* out_score_updated) EZ_STEAM_DEF_SUFFIX;

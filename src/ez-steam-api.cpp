@@ -72,6 +72,20 @@ EZ_STEAM_DEF ez_steam_user_name_get(char** out_user_name) noexcept try {
 }
 EZ_STEAM_CATCH
 
+// Language settings
+EZ_STEAM_DEF ez_steam_app_language_get(char** out_language) noexcept try {
+	*out_language = nullptr;
+
+	ISteamApps* apps = SteamApps();
+	CHECK(apps);
+
+	std::string language(apps->GetCurrentGameLanguage());
+	*out_language = duplicate_string(language);
+
+	return EZ_STEAM_SUCCESS;
+}
+EZ_STEAM_CATCH
+
 // Leaderboards
 EZ_STEAM_DEF ez_steam_leaderboard_get(const char* leaderboard_name, unsigned long long* out_leaderboard) noexcept try {
 	*out_leaderboard = 0;

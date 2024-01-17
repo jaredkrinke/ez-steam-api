@@ -28,6 +28,7 @@ const steamRaw = {
     start: lib.func("int ez_steam_start(unsigned int app_id, _Out_ int* should_restart)"),
     stop: lib.func("int ez_steam_stop()"),
     getUserName: lib.func("int ez_steam_user_name_get(_Out_ ez_steam_string* user_name)"),
+    getAppLanguage: lib.func("int ez_steam_app_language_get(_Out_ ez_steam_string* language)"),
     getLeaderboard: lib.func("int ez_steam_leaderboard_get(string leaderboard_name, _Out_ unsigned long long* leaderboard)"),
     setLeaderboardScore: lib.func("int ez_steam_leaderboard_set_score(unsigned long long leaderboard, int score, int* detail, int detail_count, _Out_ int* out_score_changed)"),
     getFriendLeaderboardScores: lib.func("int ez_steam_leaderboard_get_friend_scores(unsigned long long leaderboard, _Out_ ez_steam_string* out_friend_scores_json)"),
@@ -138,6 +139,15 @@ const Steam = {
     getUserName() {
         const out = [null];
         check("getUserName", out);
+        return out[0] ?? "";
+    },
+
+    /** Retrieve's the current app/game's selected language (for a list of possible strings, see: https://partner.steamgames.com/doc/store/localization/languages#supported_languages).
+     * @returns {string} The "API Language Code" for the current app/game (e.g. "english").
+    */
+    getAppLanguage() {
+        const out = [null];
+        check("getAppLanguage", out);
         return out[0] ?? "";
     },
 

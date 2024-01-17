@@ -22,7 +22,10 @@ const appId = 12345; // Replace with your app id
         try {
             // Log the user's "persona" (display) name
             console.log(`Name: ${Steam.getUserName()}`);
-    
+
+            // Log the chosen language for the current app/game
+            console.log(`Name: ${Steam.getAppLanguage()}`);
+
             // Set an achievement (this assumes an achievement named "FOOBAR" exists for the app)
             const newlyAchieved = Steam.setAchievement("FOOBAR");
             if (newlyAchieved) {
