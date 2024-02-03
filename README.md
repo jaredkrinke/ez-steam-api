@@ -19,6 +19,7 @@ The synchronous, flat API can be trivially used with C-based foreign function in
 Currently, this library only exposes the functionality I needed for my game (listed below). Note: The code quality is "hobby ready" (as opposed to "production ready"). I have tested on Windows (VS 2019) and Linux (G++ 9) only.
 
 * Retrieve player's "persona name" (display name)
+* Retrieve the player's preferred language for this game
 * Get, set, and persist achievements
 * Set leaderboard scores
 * Retrieve friends' leaderboard scores
